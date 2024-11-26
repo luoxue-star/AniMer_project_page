@@ -1,0 +1,44 @@
+---
+interface Props {
+  color?: string; // 用于阴影块的背景颜色
+}
+
+const { color = "#ffffff" } = Astro.props; // 默认背景颜色为白色
+---
+
+<section class="highlight-container" style={`--highlight-bg-color: ${color};`}>
+  <div class="highlight-content">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .highlight-container {
+    background-color: var(--highlight-bg-color, #ffffff); /* 背景颜色为白色（默认） */
+    display: flex; /* 自动调整宽度 */
+    padding: 2rem 2rem; /* 内边距：上下 2rem，左右 2rem，增加内容周围的空间 */
+    margin: 1rem; /* 外边距：四周留出额外的空间 */
+    border-radius: 0.75rem; /* 圆角矩形 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加更明显的阴影效果 */
+  }
+
+  .highlight-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* 子项的间距 */
+    align-items: center; /* 项目居中对齐 */
+    text-align: justify; /* 段落内容两端对齐 */
+  }
+
+  .highlight-content > h2 {
+    margin-top: 0;
+    text-align: center; /* 标题居中对齐 */
+  }
+
+  /* 特定段落的样式（可选） */
+  .highlight-content > p {
+    font-family: "Times New Roman", Times, serif; /* 段落字体 */
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+</style>

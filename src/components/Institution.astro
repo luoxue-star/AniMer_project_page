@@ -1,0 +1,35 @@
+---
+import type { Institution } from "../types/types";
+
+interface Props {
+  institutions: Institution[];
+}
+
+const { institutions } = Astro.props
+---
+
+<div class="flex flex-row gap-x-6 gap-y-3 flex-wrap justify-center">
+  {
+    institutions.map((institutions) => (
+      <div class="flex flex-col items-center text-center">
+        <span class="text-base flex flex-row items-center tracking-tight", style="font-family: 'Arial', serif;">
+        {institutions.notes && (
+            <sup class="text-xs">
+            {institutions.notes.map(
+                (note, index, array) =>
+                note + (index < array.length - 1 ? "," : "")
+            )}
+            </sup>
+        )}
+        {institutions.url ? (
+            <a href={institutions.url} class="">
+            {institution.name}
+            </a>
+        ) : (
+            institutions.name
+        )}
+        </span>
+      </div>
+    ))
+  }
+</div>

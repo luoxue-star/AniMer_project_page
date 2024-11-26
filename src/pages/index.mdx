@@ -1,0 +1,171 @@
+---
+layout: ../layouts/Layout.astro
+title: "AniMer: Animal Pose and Shape Estimation Using Family Aware Transformer"
+favicon: favicon.svg
+thumbnail: screenshot.png
+---
+
+import Layout from "../layouts/Layout.astro";
+
+import Header from "../components/Header.astro";
+import Video from "../components/Video.astro";
+import HighlightedSection from "../components/HighlightedSection.astro";
+import SmallCaps from "../components/SmallCaps.astro";
+import Figure from "../components/Figure.astro";
+import Image from "../components/Image.astro";
+import TwoColumns from "../components/TwoColumns.astro";
+import YouTubeVideo from "../components/YouTubeVideo.astro";
+import LaTeX from "../components/LaTeX.astro";
+
+import project_page1 from "../assets/Project_Page1.mp4"
+import project_page2 from "../assets/Project_Page2.mp4"
+import pipeline from "../assets/pipeline.webp";
+import generate_pipeline from "../assets/generate_pipeline.png"
+
+import CodeBlock from "../components/CodeBlock.astro";
+import Table from "../components/Table.astro";
+export const components = {pre: CodeBlock, table: Table}
+
+<Header
+  title={frontmatter.title}
+  authors={[
+    {
+      name: "Jin Lyu",
+      notes: ["*", "1"],
+    },
+    {
+      name: "Tianyi Zhu",
+      notes: ["*", "2"],
+    },
+    {
+      name: "Yi Gu",
+      notes: ["3"],
+    },
+    {
+      name: "Li Lin",
+      notes: ["1", "4"],
+    },
+    {
+      name: "Pujin Cheng",
+      notes: ["1", "4"],
+    },
+    {
+      name: "Yebin Liu",
+      notes: ["5"],
+      "url": "https://liuyebin.com/"
+    },
+    {
+      name: "Xiaoying Tang",
+      notes: ["†", "1"],
+    },
+    {
+      name: "Liang An",
+      notes: ["†", "5"],
+      "url": "https://anl13.github.io/",
+    },
+  ]}
+  institutions={[
+    {
+      name: "Southern University of Science and Technology",
+      notes: ["1"],
+    },
+    {
+      name: "China Mobile Communications Company Limited Research Institute",
+      notes: ["2"],
+    },
+    {
+      name: "The Hong Kong University of Science and Technology",
+      notes: ["3"],
+    },
+    {
+      name: "The University of Hong Kong",
+      notes: ["4"],
+    },
+    {
+      name: "Tsinghua University",
+      notes: ["5"],
+    },
+  ]}
+  conference="Arxiv"
+  notes={[
+    {
+      symbol: "*",
+      text: "Equal Contribution",
+    },
+    {
+      symbol: "†",
+      text: "Corresponding Author",
+    },
+  ]}
+  links={[
+    {
+      name: "Paper",
+      url: "",
+      icon: "fa-solid:file-pdf",
+    },
+    {
+      name: "Code",
+      url: "https://github.com/RomanHauksson/academic-project-astro-template",
+      icon: "mdi:github",
+    },
+    {
+      name: "arXiv",
+      url: "",
+      icon: "academicons:arxiv",
+    },
+  ]}
+  />
+
+<HighlightedSection color="#ffffff">
+<h2>Quantitative Results</h2>
+<Video source={project_page1} />
+</HighlightedSection>
+
+<HighlightedSection color="#ffffff">
+  <h2>Abstact</h2>
+  <p style="font-family: 'Times New Roman', Times, serif; font-size: 1.2rem; line-height: 1.3;">Quantitative analysis of animal behavior and biomechanics requires accurate animal pose and shape estimation across species, 
+      and is important for animal welfare and biological research. However, the small network capacity of previous methods and limited multi-species dataset leave this problem underexplored. 
+      To this end, this paper presents AniMer to estimate animal pose and shape using family aware Transformer, enhancing the reconstruction accuracy of diverse quadrupedal families. 
+      A key insight of AniMer is its integration of a high-capacity Transformer-based backbone and an animal family supervised contrastive learning scheme, 
+      unifying the discriminative understanding of various quadrupedal shapes within a single framework. For effective training, 
+      we aggregate most available open-sourced quadrupedal datasets, either with 3D or 2D labels. To improve the diversity of 3D labeled data, 
+      we introduce CtrlAni3D, a novel large-scale synthetic dataset created through a new diffusion-based conditional image generation pipeline. 
+      CtrlAni3D consists of about 10k images with pixel-aligned SMAL labels. In total, we obtain 41.3k annotated images for training and validation. 
+      Consequently, the combination of a family aware Transformer network and an expansive dataset enables AniMer to outperform existing methods not only on 3D datasets like Animal3D and CtrlAni3D, 
+      but also on out-of-distribution Animal Kingdom dataset. 
+      Ablation studies further demonstrate the effectiveness of our network design and CtrlAni3D in enhancing the performance of AniMer for in-the-wild applications. </p>
+</HighlightedSection>
+
+<HighlightedSection color="#ffffff">
+  <h2>AniMer</h2>
+  <p style="font-family: 'Times New Roman', Times, serif; font-size: 1.2rem; line-height: 1.3;">The goal of AniMer is to estimate the pose and shape of animal from a single image.
+    Given an Image <LaTeX inline formula="I \in \mathbb{R}^{H \times W \times 3}"/>, 
+    we first utilize a ViT encoder to extract image feature tokens <LaTeX inline formula="\mathbf{F} \in \mathbb{R}^{192 \times 1280}"/>, 
+    while the class token interacts with the image to capture information about animal family. 
+    Then, we feed the feature token <LaTeX inline formula="\mathbf{F}"/> into SMAL Transformer Decoder to obtain a feature vector <LaTeX inline formula="\boldsymbol{f} \in \mathbb{R}^{1 \times 1280}"/>.
+    Finally, the regression head are used to regress the shape parameter <LaTeX inline formula="\hat{\beta}" />, pose parameter <LaTeX inline formula="\hat{\theta}" /> and camera parameter <LaTeX inline formula="\hat{\pi}" />.
+    At the same time, the class token is fed into the predictor head for animal family supervised contrastive learning. For more details, please refer our paper.</p>
+  <Figure>
+      <Image source={pipeline} altText="" />
+  </Figure>
+</HighlightedSection>
+
+<HighlightedSection color="#ffffff">
+  <h2>CtrlAni3D Generation Pipeline</h2>
+  <p style="font-family: 'Times New Roman', Times, serif; font-size: 1.2rem; line-height: 1.3;"> The generation pipeline of CtrlAni3D dataset contains three parts: 
+  (a) Text prompt generation. (b) Conditional image generation. 
+  (c) Image generation and post-processing. For more details, please refer our paper.</p>
+  <Figure>
+      <Image source={generate_pipeline} altText="" />
+  </Figure>
+</HighlightedSection>
+
+<HighlightedSection color="#ffffff">
+  <h2>CtrlAni3D Dataset Samples</h2>
+  <Video source={project_page2} />
+</HighlightedSection>
+
+## BibTeX citation
+
+```bibtex
+```
