@@ -3,7 +3,7 @@ import type { Author, Note, Link, Institution } from "../types/types";
 import Links from "./Links.astro";
 import Authors from "./Authors.astro";
 import Notes from "./Notes.astro";
-import Institution from "./Institution.astro";
+import Institutions from "./Institution.astro";
 
 interface Props {
   title: string;
@@ -22,7 +22,7 @@ const { title, authors, institutions, conference, notes, links } = Astro.props a
   <hr class="w-full border-t-2 border-gray-400 mb-1" />
   <div class="flex flex-col gap-3 items-center">
     <Authors authors={authors} />
-    {institutions && <Institution institutions={institutions} />}
+    {institutions && <Institutions institutions={institutions} />}
     <!--{conference && <p class="text-base text-center">{conference}</p>}-->
     {notes && <Notes notes={notes} />}
     {links && <Links links={links} />}
